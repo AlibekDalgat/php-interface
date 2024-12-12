@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Queue Interface</title>
+</head>
+<body>
+
+<h1>Create Task</h1>
+<form method="post" action="/create-task">
+    <label for="input_data">Input Data:</label><br>
+    <input type="text" id="input_data" name="input_data"><br><br>
+    <input type="submit" value="Submit">
+</form>
+
+<h1>Check Task Status</h1>
+<form method="get" action="/task-status">
+    <label for="task_id">Task ID:</label><br>
+    <input type="text" id="task_id" name="task_id"><br><br>
+    <input type="submit" value="Check Status">
+</form>
+
+<script>
+    const taskStatusForm = document.querySelector('form[action="/task-status"]');
+    taskStatusForm.addEventListener('submit', function(event){
+        event.preventDefault();
+        const taskId = document.getElementById('task_id').value;
+        fetch(`/task-status/${taskId}`)
+            .then(response => response.json())
+            .then(data => {
+                alert(JSON.stringify(data));
+            });
+    });
+
+</script>
+
+</body>
+</html>
+

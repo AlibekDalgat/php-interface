@@ -1,0 +1,13 @@
+{
+    "name": "alibek/php-interface",
+    "authors": [
+        {
+            "name": "AlibekDalgat",
+            "email": "johnbuck_kebarty@mail.ru"
+        }
+    ],
+    "require": {
+        "slim/slim": "~4.0",
+        "guzzlehttp/guzzle": "^7.9"
+    }
+}
