@@ -20,17 +20,33 @@
 </form>
 
 <script>
+    const createTaskForm = document.querySelector('form[action="/create-task"]');
     const taskStatusForm = document.querySelector('form[action="/task-status"]');
-    taskStatusForm.addEventListener('submit', function(event){
+
+    createTaskForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const inputData = document.getElementById('input_data').value;
+        const formData = new FormData();
+        formData.append('input_data', inputData);
+        fetch('/create-task', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert(JSON.stringify(data));
+            })
+    });
+
+    taskStatusForm.addEventListener('submit', function(event) {
         event.preventDefault();
         const taskId = document.getElementById('task_id').value;
         fetch(`/task-status/${taskId}`)
             .then(response => response.json())
             .then(data => {
                 alert(JSON.stringify(data));
-            });
+            })
     });
-
 </script>
 
 </body>

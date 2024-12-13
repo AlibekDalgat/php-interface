@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json; charset=utf-8');
 
 require 'vendor/autoload.php';
 
@@ -23,11 +24,11 @@ $app->post('/create-task', function (Request $request, Response $response) {
 
     $client = new \GuzzleHttp\Client();
     try {
-        $res = $client->request('POST', 'http://localhost:8000/tasks', [
+        $response_from_task_queue = $client->request('POST', 'http://localhost:8000/tasks', [
             'json' => ['input_data' => $input_data]
         ]);
-        $response_data = json_decode($res->getBody(), true);
-        $task_id = $response_data['task_id'];
+        $json_decode = json_decode($response_from_task_queue->getBody(), true);
+        $task_id = $json_decode['task_id'];
         $response->getBody()->write(json_encode(['task_id' => $task_id]));
         return $response->withHeader('Content-Type', 'application/json');
     } catch (\GuzzleHttp\Exception\GuzzleException $e) {
@@ -41,9 +42,9 @@ $app->get('/task-status/{task_id}', function (Request $request, Response $respon
 
     $client = new \GuzzleHttp\Client();
     try {
-        $res = $client->request('GET', "http://localhost:8000/tasks/{$task_id}");
-        $response_data = json_decode($res->getBody(), true);
-        $response->getBody()->write(json_encode($response_data));
+        $response_from_task_queue = $client->request('GET', "http://localhost:8000/tasks/{$task_id}");
+        $json_decode = json_decode($response_from_task_queue->getBody(), true);
+        $response->getBody()->write(json_encode($json_decode));
         return $response->withHeader('Content-Type', 'application/json');
     } catch (\GuzzleHttp\Exception\GuzzleException $e) {
         $response->getBody()->write(json_encode(['error' => $e->getMessage()]));
